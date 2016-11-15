@@ -13,35 +13,56 @@
         <scala.version>2.10.6</scala.version>
         <scala.simple.version>2.10</scala.simple.version>
         <spark.version>1.6.2</spark.version>
+        <args4j.version>2.32</args4j.version>
+
+        <main.class>com.github.rssanders3.spark.java.Main</main.class>
+
+        <!-- Configurations used perform an SCP deploy -->
+        <deploy.username>cloudera</deploy.username>
+        <deploy.host>localhost</deploy.host>
+        <deploy.port>22</deploy.port>
+        <deploy.dir>/home/cloudera/</deploy.dir>
     </properties>
 
 
     <dependencies>
 
+        <!-- Spark Core -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${scala.simple.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
 
+        <!-- Spark SQL -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql_${scala.simple.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
 
+        <!-- Spark Hive -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-hive_${scala.simple.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
 
+        <!-- Java Args -->
+        <dependency>
+            <groupId>args4j</groupId>
+            <artifactId>args4j</artifactId>
+            <version>${args4j.version}</version>
+        </dependency>
+
+        <!-- Java Unit Test -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
 
+        <!-- Scala Unit Test -->
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_${scala.simple.version}</artifactId>
@@ -57,6 +78,13 @@
             <url>https://repository.cloudera.com/artifactory/repo/</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>ssh-repository</id>
+            <url>scpexe://${deploy.username}@${deploy.host}:${deploy.port}${deploy.dir}</url>
+        </repository>
+    </distributionManagement>
 
     <build>
 
@@ -135,7 +163,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.rssanders3.spark.java.Main</mainClass>
+                            <mainClass>${main.class}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -151,7 +179,16 @@
 
         </plugins>
 
-        <finalName>${project.groupId}.${project.artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
+
+        <extensions>
+            <!-- Enabling the use of SSH -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>1.0-beta-6</version>
+            </extension>
+        </extensions>
 
     </build>
 
