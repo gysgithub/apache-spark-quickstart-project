@@ -10,7 +10,7 @@ import java.util
 object MainArgs {
 
   /**
-   * https://softwaresanders.wordpress.com/2016/10/17/command-line-arguments-for-java-programs/
+   * https://softwaresanders.wordpress.com/2016/10/11/command-line-arguments-for-scala-programs/
    *
    * spark-submit spark_quick_start-jar-with-dependencies.jar --arg1 test
    */
