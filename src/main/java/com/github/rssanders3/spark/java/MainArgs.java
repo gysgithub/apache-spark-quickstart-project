@@ -3,6 +3,10 @@ package com.github.rssanders3.spark.java;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.util.logging.Logger;
 
 /**
  * Created by robertsanders on 11/14/16.
@@ -15,18 +19,34 @@ public class MainArgs {
      * spark-submit spark_quick_start-jar-with-dependencies.jar --arg1 test
      */
 
+    private static final Logger LOGGER = Logger.getLogger(MainArgs.class.getName());
+
+    private CmdLineParser parser;
+
+    private static final String ARG2_DEFAULT = "DEFAULT_VALUE";
+
     @Option(name="-arg1", usage="Argument 1", required = true)
     private String arg1;
 
+    @Option(name="-arg2", usage="Argument 2 (Default: " + ARG2_DEFAULT + ")", required = false)
+    private String arg2 = ARG2_DEFAULT;
+
     public MainArgs(String... args) throws CmdLineException {
-        CmdLineParser parser = new CmdLineParser(this);
+        this.parser = new CmdLineParser(this);
         try {
             parser.parseArgument(args);
         } catch (CmdLineException e) {
-            System.err.println(e.getMessage());
-            parser.printUsage(System.err);
+            LOGGER.severe("An exception occurred while parsing the arguments: " + e.getMessage());
+            printUsage();
             throw e;
         }
+    }
+
+    public void printUsage() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        this.parser.printUsage(baos);
+        String usage = baos.toString();
+        LOGGER.info("\n" + usage);
     }
 
     public String getArg1() {
@@ -37,11 +57,19 @@ public class MainArgs {
         this.arg1 = arg1;
     }
 
+    public String getArg2() {
+        return arg2;
+    }
+
+    public void setArg2(String arg2) {
+        this.arg2 = arg2;
+    }
+
     @Override
     public String toString() {
         return "MainArgs{" +
-                "arg1='" + arg1 + '\'' +
+                "arg2='" + arg2 + '\'' +
+                ", arg1='" + arg1 + '\'' +
                 '}';
     }
-
 }

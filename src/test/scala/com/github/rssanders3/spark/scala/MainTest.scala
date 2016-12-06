@@ -1,5 +1,6 @@
 package com.github.rssanders3.spark.scala
 
+import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest.{BeforeAndAfterAll, Matchers, GivenWhenThen, FlatSpec}
 
@@ -12,8 +13,10 @@ class MainTest extends FlatSpec with GivenWhenThen with Matchers with BeforeAndA
   private val appName = this.getClass.getSimpleName
 
   private var _sc: SparkContext = _
+  private var _sqlContext: SQLContext = _
 
   def sc = _sc
+  def sqlContext = _sqlContext
 
   val conf: SparkConf = new SparkConf()
     .setMaster(master)
@@ -22,6 +25,7 @@ class MainTest extends FlatSpec with GivenWhenThen with Matchers with BeforeAndA
   override def beforeAll(): Unit = {
     super.beforeAll()
     _sc = new SparkContext(conf)
+    _sqlContext = new SQLContext(sc)
   }
 
   override def afterAll(): Unit = {
@@ -35,6 +39,7 @@ class MainTest extends FlatSpec with GivenWhenThen with Matchers with BeforeAndA
 
   "Test" should "Test" in {
     //Main.{your_function}
+    //assert(true == true)
   }
 
 }

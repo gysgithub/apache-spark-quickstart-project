@@ -2,6 +2,7 @@ __author__ = 'robertsanders'
 
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext, HiveContext
+import logging
 
 APP_NAME = "TO-BE-COMPLETED"
 

@@ -1,2 +1,8 @@
 
+.idea
+
 /target/
+
+*.pyc
+src/main/resources/
+

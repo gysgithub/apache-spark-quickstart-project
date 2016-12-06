@@ -15,16 +15,20 @@ object MainArgs {
    * spark-submit spark_quick_start-jar-with-dependencies.jar --arg1 test
    */
 
+  val ARG2_DEFAULT = "DEFAULT_VALUE"
+
   val argsUsage = s"MainJobArgs Usage: \n" +
     s"\t[--arg1 <string> (required=true, description=Argument 1)]\n" +
+    s"\t[--arg2 <string> (required=false, default=$ARG2_DEFAULT description=Argument 2)]\n" +
     s"\n"
 
 
-  case class JobArgs(arg1: String = null) {
+  case class JobArgs(arg1: String = null, arg2: String = ARG2_DEFAULT) {
 
     override def toString(): String = {
       s"MainJobArgs(\n" +
         s"arg1=$arg1, \n" +
+        s"arg2=$arg2 \n" +
         s")"
     }
 
@@ -53,6 +57,7 @@ object MainArgs {
     args.toList match {
       case Nil => jobArgs
       case "--arg1" :: value :: otherArgs => parseJobArgs(otherArgs, jobArgs.copy(arg1 = value))
+      case "--arg2" :: value :: otherArgs => parseJobArgs(otherArgs, jobArgs.copy(arg2 = value))
       case option :: tail => println("Unknown option " + option); return null;
     }
   }
