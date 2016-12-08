@@ -62,7 +62,7 @@ object MainArgs {
       case Nil => jobArgs
       case "--arg1" :: value :: otherArgs => parseJobArgs(otherArgs, jobArgs.copy(arg1 = value))
       case "--arg2" :: value :: otherArgs => parseJobArgs(otherArgs, jobArgs.copy(arg2 = value))
-      case option :: tail => println("Unknown option " + option); return null;
+      case option :: tail => LOGGER.error("Unknown option " + option); return null;
     }
   }
 

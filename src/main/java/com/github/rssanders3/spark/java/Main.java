@@ -30,7 +30,7 @@ public class Main {
         }
 
         MainArgs mainArgs = new MainArgs(args);
-        System.out.println(mainArgs);
+        LOGGER.info(mainArgs.toString());
 
         SparkConf conf = new SparkConf().setAppName(APP_NAME);
         JavaSparkContext sc = new JavaSparkContext(conf);
