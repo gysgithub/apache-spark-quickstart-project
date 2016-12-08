@@ -3,10 +3,10 @@ package com.github.rssanders3.spark.java;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
-import java.util.logging.Logger;
 
 /**
  * Created by robertsanders on 11/14/16.
@@ -19,7 +19,7 @@ public class MainArgs {
      * spark-submit spark_quick_start-jar-with-dependencies.jar --arg1 test
      */
 
-    private static final Logger LOGGER = Logger.getLogger(MainArgs.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainArgs.class);
 
     private CmdLineParser parser;
 
@@ -36,7 +36,7 @@ public class MainArgs {
         try {
             parser.parseArgument(args);
         } catch (CmdLineException e) {
-            LOGGER.severe("An exception occurred while parsing the arguments: " + e.getMessage());
+            LOGGER.error("An exception occurred while parsing the arguments: ", e);
             printUsage();
             throw e;
         }
@@ -45,8 +45,7 @@ public class MainArgs {
     public void printUsage() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         this.parser.printUsage(baos);
-        String usage = baos.toString();
-        LOGGER.info("\n" + usage);
+        LOGGER.info("\n" + baos.toString());
     }
 
     public String getArg1() {

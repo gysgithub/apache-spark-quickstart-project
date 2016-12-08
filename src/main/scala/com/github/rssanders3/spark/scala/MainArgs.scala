@@ -3,6 +3,8 @@ package com.github.rssanders3.spark.scala
 import java.security.InvalidParameterException
 import java.util
 
+import org.slf4j.{LoggerFactory, Logger}
+
 
 /**
  * Created by robertsanders on 11/14/16.
@@ -14,6 +16,8 @@ object MainArgs {
    *
    * spark-submit spark_quick_start-jar-with-dependencies.jar --arg1 test
    */
+
+  val LOGGER: Logger = LoggerFactory.getLogger(MainArgs.getClass.getName)
 
   val ARG2_DEFAULT = "DEFAULT_VALUE"
 

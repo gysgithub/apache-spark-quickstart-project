@@ -1,9 +1,8 @@
 package com.github.rssanders3.spark.scala
 
-import java.util.logging.Logger
-
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.{SparkConf, SparkContext}
+import org.slf4j.{Logger, LoggerFactory}
 
 
 /**
@@ -11,7 +10,7 @@ import org.apache.spark.{SparkConf, SparkContext}
  */
 object Main {
 
-  val LOGGER: Logger = Logger.getLogger(Main.getClass.getName)
+  val LOGGER: Logger = LoggerFactory.getLogger(Main.getClass.getName)
 
   val APP_NAME: String = "TO-BE-COMPLETED"
 
@@ -19,18 +18,19 @@ object Main {
 
     //if arguments include -help or --help then print Argument Usage
     if (args.contains("-help") || args.contains("--help")) {
-      println(MainArgs.argsUsage)
+      LOGGER.info(MainArgs.argsUsage)
       System.exit(0)
     }
 
     val jobArgs = MainArgs.parseJobArgs(args.toList)
     if (jobArgs == null) {
-      println(MainArgs.argsUsage)
+      LOGGER.error("")
+      LOGGER.info(MainArgs.argsUsage)
       System.exit(-1)
     }
 
     jobArgs.validate()
-    println(jobArgs)
+    LOGGER.info(jobArgs.toString())
 
     val conf = new SparkConf().setAppName(APP_NAME)
     val sc = new SparkContext(conf)
